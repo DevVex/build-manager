@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Make sure NVM and Angular 2.* are installed
+Make sure NVM, Angular 2.* and MongoDB are installed. MongoDB needs to be listening on default port (27017) or change [this](https://github.com/DevVex/build-manager/blob/master/app.js#L9) to point to db before setup.
 
 ## Setup
 
