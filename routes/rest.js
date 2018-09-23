@@ -1,7 +1,16 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-router.get('/read', function(req, res, next) {
+router.get('/builds', (req, res, next) => {
+  req.db.get('builds').find({}).then((result) => {
+    res.status(200).json(result);
+  }, function(error){
+    console.error('error:', error);
+    res.status(500).json({error: error});
+  })
+});
+
+router.get('/read', (req, res, next) => {
   let params = ['bundle_id']
   let bundleId = req.query[params[0]];
 
@@ -10,35 +19,37 @@ router.get('/read', function(req, res, next) {
     return;
   }
 
-  req.db.get('builds').findOne({ bundleId: bundleId }).then(function (build) {
-    if(!build || !build.buildNumber){
+  req.db.get('builds').findOne({ bundleId: bundleId }).then((build) => {
+    if(!build || typeof build.buildNumber === undefined){
       res.status(404).json({ message: `no build found for bundleId: ${bundleId}`});
       return;
     }
     res.send(build.buildNumber.toString());
   }, function(error){
+    console.error('error:', error);
     res.status(500).json({error: error});
   })
 });
 
-router.post('/set', function(req, res, next) {
+router.post('/set', (req, res, next) => {
   let params = ['bundle_id', 'new_build_number']
   let bundleId = req.query[params[0]];
   let newBuildNumber = parseInt(req.query[params[1]]) || 0;
 
   if(!bundleId){
-    res.status(400).json({ message: `request requires ${params}`});
+    res.status(400).json({ message: `request requires ${params[0]}`});
     return;
   }
 
-  req.db.get('builds').update({ bundleId: bundleId}, { $max: { buildNumber: newBuildNumber } }, {upsert: true}).then(function (build) {
-    res.sendStatus(200);
+  req.db.get('builds').update({ bundleId: bundleId}, { $max: { buildNumber: newBuildNumber } }, {upsert: true}).then((build) => {
+    res.status(200).json({});
   }, function(error){
+    console.error('error:', error);
     res.status(500).json({error: error});
   })
 });
 
-router.post('/bump', function(req, res, next) {
+router.post('/bump', (req, res, next) => {
   let params = ['bundle_id']
   let bundleId = req.query[params[0]];
 
@@ -47,9 +58,10 @@ router.post('/bump', function(req, res, next) {
     return;
   }
 
-  req.db.get('builds').findOneAndUpdate({ bundleId: bundleId}, { $inc: { buildNumber: 1 } }, {upsert: true}).then(function (build) {
+  req.db.get('builds').findOneAndUpdate({ bundleId: bundleId}, { $inc: { buildNumber: 1 } }, {upsert: true}).then((build) => {
     res.send(build.buildNumber.toString());
   }, function (error) {
+    console.error('error:', error);
     res.status(500).json({error: error});
   })
 });

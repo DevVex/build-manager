@@ -1,0 +1,39 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+
+.container {
+    font-family: 'Fredoka One', cursive;
+}
+
+.container input {
+    font-family: arial;
+}
+
+.error{
+    background-color: #fc7a38;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+.set-build { 
+    border: 4px dashed #51bfb6;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.set-build input{
+    margin: 4px;
+}
+
+.title {
+    color: white;
+    background-color: #fc68c3;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+button {
+    background-color: #fb7938;
+    color: white;
+    margin: 4px;
+}
