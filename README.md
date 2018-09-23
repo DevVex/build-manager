@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Make sure NVM and Angular 2.* are install on your machine
+Make sure NVM and Angular 2.* are installed
 
 ## Setup
 
@@ -12,7 +12,7 @@ Make sure NVM and Angular 2.* are install on your machine
 
 `npm start`
 
-This will install and build the Frontend and Backend and listen on port 3000
+This will build and install the Frontend and Backend and listen on port 3000
 
 Run with pm2
 
@@ -25,6 +25,12 @@ Monitor running pm2 instances
 
 
 # REST API
+
+/api/version
+* [GET] returns name and version of the app
+
+/api/builds
+* [GET] returns all builds (array)
 
 /api/read 
 * [GET] params:  bundle_id  (string)     
