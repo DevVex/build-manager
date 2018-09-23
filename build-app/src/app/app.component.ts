@@ -1,5 +1,4 @@
-import { ErrorHandler, Component
-} from '@angular/core';
+import { ErrorHandler, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -8,13 +7,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent extends ErrorHandler{
-  title = 'Build App';
+  appInfo:any = {name: 'build-manager', version: '0.0.0'};
   builds:any = [];
   newBuild = { bundleId: '', buildNumber: ''};
   errorMessage = '';
 
   constructor(private http: HttpClient) {
     super()
+    this.getInfo();
     this.getBuilds();
   }
 
@@ -27,15 +27,21 @@ export class AppComponent extends ErrorHandler{
     alert(this.errorMessage);
   }
 
+  getInfo(){
+    this.http.get('/api/version') 
+      .subscribe(result => {
+        this.appInfo = result;
+      })
+  }
+
   getBuilds(){
-    this.http.get('/api/builds') .subscribe(result => {
-      this.builds = result;
-    })
+    this.http.get('/api/builds') 
+      .subscribe(result => {
+        this.builds = result;
+      })
   }
 
   updateId(id){
-    this.errorMessage = this.errorMessage;
-    console.log('this.errorMessage', this.errorMessage)
     this.http.get(`/api/read?bundle_id=${id}`)
       .subscribe(result => {
         let buildObj = this.builds.find( build => build.bundleId === id );
@@ -56,7 +62,6 @@ export class AppComponent extends ErrorHandler{
   }
 
   setBuild(build){
-    this.errorMessage = '';
     build.edit ?  build.edit = false : null;
     this.http.post(`/api/set?bundle_id=${build.bundleId}&new_build_number=${build.buildNumber}`, null)
       .subscribe(result => {
@@ -65,8 +70,6 @@ export class AppComponent extends ErrorHandler{
   }
 
   bumpBuild(id){
-    this.errorMessage = '';
-    console.log('error', this.errorMessage);
     this.http.post(`/api/bump?bundle_id=${id}`, null)
       .subscribe(result => {
         this.updateId(id);

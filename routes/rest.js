@@ -1,5 +1,10 @@
 let express = require('express');
 let router = express.Router();
+let {name, version} = require('../package.json');
+
+router.get('/version', (req, res, next) => {
+  res.status(200).json({name: name, version: version});
+})
 
 router.get('/builds', (req, res, next) => {
   req.db.get('builds').find({}).then((result) => {

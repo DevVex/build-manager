@@ -1,6 +1,24 @@
 # build-manager
 
+## Prerequisites
+
+Make sure NVM and Angular 2.* are install on your machine
+
+## Setup
+
+`nvm install`
+
+`nvm use`
+
+`npm start`
+
+This will install and build the Frontend and Backend and listen on port 3000
+
+Run with pm2
+
 `pm2 start npm -- start`
+
+Monitor running pm2 instances
 
 `pm2 monit`
 
